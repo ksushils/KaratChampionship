@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -78,6 +79,19 @@ export default buildConfig({
   graphQL: { disable: true },
   cors: [serverURL],
   csrf: [serverURL],
+  // CMS system email (password resets). Enquiry notifications use the outbox in src/lib/notifications.ts.
+  email: process.env.SMTP_HOST
+    ? nodemailerAdapter({
+        defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'no-reply@example.com',
+        defaultFromName: 'Karat Racing',
+        transportOptions: {
+          host: process.env.SMTP_HOST,
+          port: Number(process.env.SMTP_PORT || 587),
+          secure: process.env.SMTP_SECURE === 'true',
+          auth: process.env.SMTP_USER ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS } : undefined,
+        },
+      })
+    : undefined,
   sharp,
   upload: { limits: { fileSize: 10_000_000 } },
   jobs: {

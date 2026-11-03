@@ -98,7 +98,7 @@ export default async function DriverPage({ params }: P) {
                       <tr key={e.id}>
                         <td>{e.season}</td>
                         <td>
-                          <Link className="underline" href={`/championship-team/programmes/${(e.programme as Programme)?.slug}/${e.season}`}>
+                          <Link className="underline" href={`/championship-team/programmes/${(e.programme as Programme)?.slug}`}>
                             {(e.programme as Programme)?.title}
                           </Link>
                         </td>

@@ -58,6 +58,7 @@ export const Drivers: CollectionConfig = {
         },
         {
           label: 'Safeguarding',
+          description: 'Never enter home addresses, private contact details or full dates of birth (DRV-15).',
           fields: [
             { name: 'isMinor', type: 'checkbox', defaultValue: false, admin: { description: 'Under 18 at time of publication.' } },
             {
@@ -69,11 +70,6 @@ export const Drivers: CollectionConfig = {
                 { name: 'mediaConsentRecorded', type: 'checkbox' },
                 { name: 'consentReference', type: 'text', admin: { description: 'Where the signed consent is held (not the document itself).' } },
               ],
-            },
-            {
-              name: 'privacyNote',
-              type: 'ui',
-              admin: { components: {}, description: 'Never enter home addresses, private contact details or full dates of birth (DRV-15).' },
             },
           ],
         },

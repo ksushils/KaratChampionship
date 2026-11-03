@@ -486,6 +486,8 @@ export interface Source {
   createdAt: string;
 }
 /**
+ * Privileged accounts must be protected by MFA at the identity layer before launch (see SECURITY.md).
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */

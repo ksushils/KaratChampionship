@@ -17,6 +17,9 @@ importers:
       '@payloadcms/db-postgres':
         specifier: 3.92.1
         version: 3.92.1(payload@3.92.1(graphql@16.14.2)(typescript@5.7.3))
+      '@payloadcms/email-nodemailer':
+        specifier: 3.92.1
+        version: 3.92.1(payload@3.92.1(graphql@16.14.2)(typescript@5.7.3))
       '@payloadcms/next':
         specifier: 3.92.1
         version: 3.92.1(@types/react@19.2.14)(graphql@16.14.2)(monaco-editor@0.57.0)(next@16.3.3(@babel/core@7.29.7)(@playwright/test@1.63.0)(@types/node@22.19.9)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.92.1(graphql@16.14.2)(typescript@5.7.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.7.3)
@@ -1381,6 +1384,12 @@ packages:
 
   '@payloadcms/drizzle@3.92.1':
     resolution: {integrity: sha512-uSSezPy940PdZE7MtdXOT/UQ8ivxejky1yJ8yrgfsdwfWRBsuVn9FJIbNoTllsZdoE1qM7QIvpmBjqhWyHO+4w==}
+    peerDependencies:
+      payload: 3.92.1
+
+  '@payloadcms/email-nodemailer@3.92.1':
+    resolution: {integrity: sha512-84OSXK+YXuYV8tUv7k9v7PKzKHRLKMmcrq7BU95LapazgkfkU2bgsOeiXlfx9k8V0ARvXuFKZR+U/rYunX+UKw==}
+    engines: {node: ^22.23.4 || >=24.22.1}
     peerDependencies:
       payload: 3.92.1
 
@@ -3433,6 +3442,10 @@ packages:
   node-releases@2.0.63:
     resolution: {integrity: sha512-6li2QanLsAXpIH2R6j77MzRyvOyrvdTqlKtO4CgBdHGNvN99ZZfyxszHc5o5+IZBWD5u6Hzwg83JoGXmqZNG9Q==}
     engines: {node: '>=18'}
+
+  nodemailer@10.3.1:
+    resolution: {integrity: sha512-uF0AFsJC07Y1vdW7p580DKAnh7rAO+4UPSSB3mDCPNDufoiaOebV6JmrzpxB14OjEEEiBsNdYoM2Y+fN8M7BBA==}
+    engines: {node: '>=20.0.0'}
 
   nodemailer@6.10.1:
     resolution: {integrity: sha512-Z+iLaBGVaSjbIzQ4pX6XV41HrooLsQ10ZWPUehGmuantvzWoDVBnmsdUcOIDM1t+yPor5pDhVlDESgOMEGxhHA==}
@@ -5541,6 +5554,11 @@ snapshots:
       - prisma
       - sql.js
       - sqlite3
+
+  '@payloadcms/email-nodemailer@3.92.1(payload@3.92.1(graphql@16.14.2)(typescript@5.7.3))':
+    dependencies:
+      nodemailer: 10.3.1
+      payload: 3.92.1(graphql@16.14.2)(typescript@5.7.3)
 
   '@payloadcms/graphql@3.92.1(graphql@16.14.2)(payload@3.92.1(graphql@16.14.2)(typescript@5.7.3))(typescript@5.7.3)':
     dependencies:
@@ -7901,6 +7919,8 @@ snapshots:
       semver: 6.3.2
 
   node-releases@2.0.63: {}
+
+  nodemailer@10.3.1: {}
 
   nodemailer@6.10.1: {}
 

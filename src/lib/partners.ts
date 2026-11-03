@@ -1,3 +1,5 @@
+import type { Where } from 'payload'
+
 /** Partner rights logic (SPON-05, SPON-06, acceptance #22). */
 export interface PartnershipLike {
   startDate?: string | null
@@ -25,7 +27,7 @@ export function sortByHierarchy<T extends { tier?: string | null; displayOrder?:
 }
 
 /** Where-clause for currently valid, approved partnerships. */
-export const currentPartnershipWhere = (now = new Date()) => {
+export const currentPartnershipWhere = (now = new Date()): Where => {
   const iso = now.toISOString()
   const dayAgo = new Date(now.getTime() - 86_400_000).toISOString()
   return {

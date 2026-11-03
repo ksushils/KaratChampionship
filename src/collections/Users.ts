@@ -3,7 +3,7 @@ import { DIVISION_KEYS, ROLES, adminOnly, isAdmin } from '../access/roles'
 
 export const Users: CollectionConfig = {
   slug: 'users',
-  admin: { useAsTitle: 'email', group: 'Governance', defaultColumns: ['email', 'name', 'roles', 'divisions'] },
+  admin: { useAsTitle: 'email', group: 'Governance', defaultColumns: ['email', 'name', 'roles', 'divisions'], description: 'Privileged accounts must be protected by MFA at the identity layer before launch (see SECURITY.md).' },
   auth: {
     tokenExpiration: 60 * 60 * 8, // 8h session expiry
     maxLoginAttempts: 5,
@@ -39,15 +39,6 @@ export const Users: CollectionConfig = {
       admin: { description: 'Business divisions this user may act for (CMS-09).' },
       access: { update: ({ req }) => isAdmin(req.user as never), create: ({ req }) => isAdmin(req.user as never) },
       saveToJWT: true,
-    },
-    {
-      name: 'mfaNote',
-      type: 'ui',
-      admin: {
-        components: {},
-        description:
-          'Privileged accounts must use SSO/MFA at the identity layer before launch (see SECURITY.md). Payload local auth does not provide MFA itself.',
-      },
     },
   ],
 }

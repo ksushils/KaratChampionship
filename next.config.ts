@@ -32,6 +32,8 @@ const csp = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Docker image build sets NEXT_OUTPUT=standalone (see Dockerfile / DEPLOYMENT.md).
+  output: process.env.NEXT_OUTPUT === 'standalone' ? 'standalone' : undefined,
   images: {
     formats: ['image/avif', 'image/webp'],
     localPatterns: [{ pathname: '/api/media/file/**' }, { pathname: '/brand/**' }],

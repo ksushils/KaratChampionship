@@ -1,13 +1,14 @@
-import { APIError, type CollectionConfig } from 'payload'
+import { APIError, type Access, type CollectionConfig, type Where } from 'payload'
 import { roles } from '../access/roles'
 import { demoField } from '../fields/common'
 import { auditAfterChange, auditAfterDelete } from '../hooks/audit'
 import { RESULT_STATUSES, validateResultEntries } from '../lib/results'
 
-const publicVerified = ({ req }: { req: any }) => {
-  if (req.user && (req.user.roles ?? []).some((r: string) => ['admin', 'raceData', 'editor'].includes(r))) return true
+const publicVerified: Access = ({ req }) => {
+  if (req.user && (((req.user as { roles?: string[] }).roles) ?? []).some((r: string) => ['admin', 'raceData', 'editor'].includes(r))) return true
   // HOME-06 / RES-07: only published, verified data reaches the public.
-  return { and: [{ _status: { equals: 'published' } }, { verification: { equals: 'verified' } }] }
+  const w: Where = { and: [{ _status: { equals: 'published' } }, { verification: { equals: 'verified' } }] }
+  return w
 }
 
 const validateEntries = ({ data }: { data: any }) => {

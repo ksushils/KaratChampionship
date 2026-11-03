@@ -1,4 +1,4 @@
-# To use this Dockerfile, you have to set `output: 'standalone'` in your next.config.mjs file.
+# Build with NEXT_OUTPUT=standalone (set below). Run `pnpm migrate` as a release step before starting new containers.
 # From https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 
 FROM node:22.23.4-alpine AS base
@@ -22,6 +22,7 @@ RUN \
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
+ENV NEXT_OUTPUT=standalone
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 

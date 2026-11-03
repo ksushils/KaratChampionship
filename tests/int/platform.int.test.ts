@@ -159,7 +159,7 @@ describe('embargo & search (acceptance #12, #28)', () => {
 describe('seasons & engagements (acceptance #13, #14)', () => {
   it('rollover creates an intended season without copying confirmation', async () => {
     const prev = await payload.create({ collection: 'programme-seasons', data: { programme: ids.prog['italian-f4'], year: 2030, participationStatus: 'confirmed', seatAvailability: 'full' }, overrideAccess: true })
-    const next = await payload.create({ collection: 'programme-seasons', data: rolloverProgrammeSeason({ ...prev, programme: ids.prog['italian-f4'] }), overrideAccess: true })
+    const next = await payload.create({ collection: 'programme-seasons', data: rolloverProgrammeSeason({ ...prev, programme: ids.prog['italian-f4'] }) as any, overrideAccess: true })
     expect(next).toMatchObject({ year: 2031, participationStatus: 'intended', seatAvailability: 'not-published' })
   })
   it('one driver can carry different numbers across seasons', async () => {
@@ -174,7 +174,7 @@ describe('seasons & engagements (acceptance #13, #14)', () => {
 describe('events, sessions and results (acceptance #15, #20, #21)', () => {
   it('session local time converts to UTC with the circuit zone', async () => {
     const c = await payload.create({ collection: 'circuits', data: { name: 'Test Ring', country: 'Italy', timeZone: 'Europe/Rome' }, overrideAccess: true })
-    const e = await payload.create({ collection: 'events', data: { title: 'Test Round', season: 2026, startDate: '2026-03-28', endDate: '2026-03-29', circuit: c.id, _status: 'published' }, overrideAccess: true })
+    const e = await payload.create({ collection: 'events', data: { title: 'Test Round', season: 2026, startDate: '2026-03-28', endDate: '2026-03-29', circuit: c.id, _status: 'published' } as any, overrideAccess: true })
     expect(e.timeZone).toBe('Europe/Rome')
     const s = await payload.create({ collection: 'sessions', data: { event: e.id, name: 'Race', localStart: '2026-03-29T10:00', localEnd: '2026-03-29T10:30' }, overrideAccess: true })
     expect(s.startsAt).toBe('2026-03-29T08:00:00.000Z')
@@ -185,7 +185,7 @@ describe('events, sessions and results (acceptance #15, #20, #21)', () => {
     const s = await payload.find({ collection: 'sessions', where: { name: { equals: 'Race' } }, overrideAccess: true })
     const rs = await payload.create({
       collection: 'result-sets',
-      data: { label: 'Race — Overall', event: e.docs[0].id, session: s.docs[0].id, season: 2026, state: 'provisional', verification: 'verified', source: { url: 'https://example.org/r' }, entries: [{ position: 1, driverName: 'A', points: null }, { driverName: 'B', status: 'DNF' }], _status: 'published' },
+      data: { ...({} as any), label: 'Race — Overall', event: e.docs[0].id, session: s.docs[0].id, season: 2026, state: 'provisional', verification: 'verified', source: { url: 'https://example.org/r' }, entries: [{ position: 1, driverName: 'A', points: null }, { driverName: 'B', status: 'DNF' }], _status: 'published' },
       overrideAccess: false,
       user: users.raceData,
     })
@@ -196,12 +196,12 @@ describe('events, sessions and results (acceptance #15, #20, #21)', () => {
     const audit = await payload.find({ collection: 'audit-logs', where: { and: [{ collectionSlug: { equals: 'result-sets' } }, { documentId: { equals: String(rs.id) } }] }, overrideAccess: true })
     expect(audit.docs.length).toBeGreaterThanOrEqual(2)
     expect(audit.docs.every((a) => a.userEmail === 'race@test.local')).toBe(true)
-    await expect(payload.create({ collection: 'result-sets', data: { label: 'Dup', event: e.docs[0].id, session: s.docs[0].id, season: 2026, entries: [{ position: 1, driverName: 'A' }, { position: 1, driverName: 'B' }] }, overrideAccess: true })).rejects.toThrow(/Duplicate position/)
+    await expect(payload.create({ collection: 'result-sets', data: { ...({} as any), label: 'Dup', event: e.docs[0].id, session: s.docs[0].id, season: 2026, entries: [{ position: 1, driverName: 'A' }, { position: 1, driverName: 'B' }] }, overrideAccess: true })).rejects.toThrow(/Duplicate position/)
   })
   it('unverified results are not public', async () => {
     const e = await payload.find({ collection: 'events', where: { title: { equals: 'Test Round' } }, overrideAccess: true })
     const s = await payload.find({ collection: 'sessions', where: { name: { equals: 'Race' } }, overrideAccess: true })
-    await payload.create({ collection: 'result-sets', data: { label: 'Unverified', event: e.docs[0].id, session: s.docs[0].id, season: 2026, verification: 'unverified', entries: [], _status: 'published' }, overrideAccess: true })
+    await payload.create({ collection: 'result-sets', data: { ...({} as any), label: 'Unverified', event: e.docs[0].id, session: s.docs[0].id, season: 2026, verification: 'unverified', entries: [], _status: 'published' }, overrideAccess: true })
     const pub = await payload.find({ collection: 'result-sets', overrideAccess: false })
     expect(pub.docs.map((d) => d.label)).not.toContain('Unverified')
   })

@@ -43,7 +43,7 @@ export const seasonRolloverEndpoint: Endpoint = {
     if (!body?.programmeSeasonId) return Response.json({ error: 'programmeSeasonId required' }, { status: 400 })
     const prev = await req.payload.findByID({ collection: 'programme-seasons', id: body.programmeSeasonId, depth: 0, overrideAccess: true })
     const next = rolloverProgrammeSeason({ ...prev, programme: prev.programme as number }, body.year)
-    const created = await req.payload.create({ collection: 'programme-seasons', data: next, req, overrideAccess: false, user: req.user })
+    const created = await req.payload.create({ collection: 'programme-seasons', data: next as never, req, overrideAccess: false, user: req.user })
     return Response.json({ created })
   },
 }
