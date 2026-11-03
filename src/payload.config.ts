@@ -16,6 +16,7 @@ import { ResultSets, Standings } from './collections/Results'
 import { DriverEngagements, Drivers, Facilities, HeritageMilestones, People } from './collections/People'
 import { Applications, Articles, Faqs, LiveUpdates, MediaCollections, Partners, Partnerships, Vacancies } from './collections/Editorial'
 import { Enquiries } from './collections/Enquiries'
+import { TestCars } from './collections/TestingFleet'
 import { FeatureFlags, SiteSettings, TeamContent } from './globals'
 import { healthEndpoint, notificationsCronEndpoint, resultsImportPreviewEndpoint, seasonRolloverEndpoint } from './endpoints'
 
@@ -61,6 +62,7 @@ export default buildConfig({
     CvUploads,
     Enquiries,
     Notifications,
+    TestCars,
     Sources,
     Redirects,
     ConsentRecords,

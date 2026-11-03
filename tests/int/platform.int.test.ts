@@ -248,6 +248,15 @@ describe('editorial workflow (acceptance #33, CMS-04)', () => {
   })
 })
 
+describe('testing division boundary (brief §25)', () => {
+  it('reserved fleet data is never publicly readable', async () => {
+    await payload.create({ collection: 'test-cars', data: { name: 'Internal car', ownership: 'partner' }, overrideAccess: true })
+    await expect(payload.find({ collection: 'test-cars', overrideAccess: false })).rejects.toThrow()
+    await expect(payload.find({ collection: 'test-cars', ...asUser(users.raceData) })).rejects.toThrow()
+    expect((await payload.find({ collection: 'test-cars', ...asUser(users.commercial) })).docs).toHaveLength(1)
+  })
+})
+
 describe('launch gate (acceptance #35)', () => {
   it('base seed contains no demo fixtures', async () => {
     expect(await findDemoContent(payload)).toEqual({})

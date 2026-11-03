@@ -72,3 +72,11 @@ Public pages are `force-dynamic` server components. Embargoes are time-based (`a
 ## Forms
 
 Forms use server actions (`src/app/(frontend)/actions.ts`), with Next's built-in origin check against CSRF. They are validated server-side with the shared Zod schemas, then persisted. Only after that are notifications queued in the `notifications` outbox. Delivery runs after the response (`after()`) and through `/api/cron/notifications`, with exponential backoff.
+
+## Reserved architecture (future scope)
+
+**Testing & Karat Academy.** The `test-cars` collection (staff-only, admin group "Testing (reserved)") holds ownership and operator, category, generation, specification, base location, circuits, internal availability windows, services and restrictions. It has **no public route**. Publishing availability, prices or bookings needs a new, approved scope plus a payments provider.
+
+**Championship Series (India).** No organiser data model has been created, on purpose. When the project is approved, add these collections: `series` (name, sanctioning body, approval status + evidence), `series-seasons`, `series-regulations` (versioned documents), `series-entries` (teams, drivers), and reuse `events`, `sessions`, `result-sets`, `partners` with a `division` field. Keep the public routes under `/championship-organisation/**`. Its permissions should be scoped through `users.divisions = championship-organisation`, which already exists.
+
+**Portals.** If a driver or partner portal is authorised, use Payload auth on a separate `portal-users` collection with record-level access, MFA, expiring signed file URLs and the existing audit log. Never use a client-side password page.

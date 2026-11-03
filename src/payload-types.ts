@@ -94,6 +94,7 @@ export interface Config {
     'cv-uploads': CvUpload;
     enquiries: Enquiry;
     notifications: Notification;
+    'test-cars': TestCar;
     sources: Source;
     redirects: Redirect;
     'consent-records': ConsentRecord;
@@ -134,6 +135,7 @@ export interface Config {
     'cv-uploads': CvUploadsSelect<false> | CvUploadsSelect<true>;
     enquiries: EnquiriesSelect<false> | EnquiriesSelect<true>;
     notifications: NotificationsSelect<false> | NotificationsSelect<true>;
+    'test-cars': TestCarsSelect<false> | TestCarsSelect<true>;
     sources: SourcesSelect<false> | SourcesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     'consent-records': ConsentRecordsSelect<false> | ConsentRecordsSelect<true>;
@@ -1414,6 +1416,49 @@ export interface Notification {
   createdAt: string;
 }
 /**
+ * Internal only — not shown on the website.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "test-cars".
+ */
+export interface TestCar {
+  id: number;
+  name: string;
+  ownership: 'owned' | 'operated' | 'partner';
+  operator?: string | null;
+  /**
+   * e.g. F4, Formula Regional
+   */
+  category?: string | null;
+  generation?: string | null;
+  specification?: {
+    chassis?: string | null;
+    engine?: string | null;
+    gearbox?: string | null;
+    tyres?: string | null;
+  };
+  baseLocation?: string | null;
+  circuits?: (number | Circuit)[] | null;
+  /**
+   * Internal planning windows only — never published as live availability.
+   */
+  availability?:
+    | {
+        from: string;
+        to: string;
+        note?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  services?: string[] | null;
+  /**
+   * Eligibility, licence and circuit restrictions.
+   */
+  restrictions?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -1681,6 +1726,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'notifications';
         value: number | Notification;
+      } | null)
+    | ({
+        relationTo: 'test-cars';
+        value: number | TestCar;
       } | null)
     | ({
         relationTo: 'sources';
@@ -2582,6 +2631,39 @@ export interface NotificationsSelect<T extends boolean = true> {
   nextAttemptAt?: T;
   sentAt?: T;
   lastError?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "test-cars_select".
+ */
+export interface TestCarsSelect<T extends boolean = true> {
+  name?: T;
+  ownership?: T;
+  operator?: T;
+  category?: T;
+  generation?: T;
+  specification?:
+    | T
+    | {
+        chassis?: T;
+        engine?: T;
+        gearbox?: T;
+        tyres?: T;
+      };
+  baseLocation?: T;
+  circuits?: T;
+  availability?:
+    | T
+    | {
+        from?: T;
+        to?: T;
+        note?: T;
+        id?: T;
+      };
+  services?: T;
+  restrictions?: T;
   updatedAt?: T;
   createdAt?: T;
 }

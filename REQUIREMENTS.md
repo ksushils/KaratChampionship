@@ -280,6 +280,7 @@ Abbreviations: `U` = tests/unit, `I` = tests/int/platform.int.test.ts, `J` = tes
 | CMS-19 | CMS | Launch | IT | global | feature-flags | — |  |
 | CMS-20 | CMS | Launch | IT | I kill-switch | enabled flags | — |  |
 | TEST-LP | Testing division | Launch | IT | J #2 | /testing | Approved proposition |  |
+| TEST-FLEET | Testing division | Future | IT | I testing division boundary | test-cars (staff-only) | Fleet data | Reserved model, no public route |
 | TEST-ENQ | Testing division | Launch | IT | I divisions | /testing/enquire | — |  |
 | ORG-LP | Organisation division | Launch | IT | visual | /championship-organisation | Approved ambition |  |
 | ORG-ENQ | Organisation division | Launch | IT | I divisions | /championship-organisation/enquire | — |  |

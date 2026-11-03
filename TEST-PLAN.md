@@ -3,8 +3,8 @@
 | Layer | Command | Runs against | Count (at handover) |
 |---|---|---|---|
 | Unit | `pnpm test:unit` | Pure logic (time zones and DST, events, ICS, results, partners, media rights, rollover, schemas, rate limit, analytics sanitising) | 34 passing |
-| Integration | `pnpm test:int` | Real PostgreSQL test DB (`TEST_DATABASE_URL`, schema reset per run). Payload local API with real access control | 23 passing |
-| End-to-end | `pnpm test:e2e` | Running site seeded with `pnpm seed:demo`. Chromium desktop plus Pixel 7 emulation. Axe-core WCAG 2.2 AA scans | 30 passing |
+| Integration | `pnpm test:int` | Real PostgreSQL test DB (`TEST_DATABASE_URL`, schema reset per run). Payload local API with real access control | 24 passing |
+| End-to-end | `pnpm test:e2e` | Running site seeded with `pnpm seed:demo`. Chromium desktop plus Pixel 7 emulation. Axe-core WCAG 2.2 AA scans | 30 passing (dev and production build) |
 | Type safety | `pnpm typecheck` | Whole repo | clean |
 | Build | `pnpm build` | Production build | passes |
 | Links | `pnpm check:links` | Running site | 0 broken |
