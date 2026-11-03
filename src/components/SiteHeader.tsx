@@ -28,7 +28,7 @@ function useEscape(open: boolean, close: () => void, ref: React.RefObject<HTMLEl
   }, [open, close, ref])
 }
 
-function Disclosure({ label, children, id, current }: { label: React.ReactNode; children: React.ReactNode; id: string; current?: boolean }) {
+function Disclosure({ label, children, id, current, chip }: { label: React.ReactNode; children: React.ReactNode; id: string; current?: boolean; chip?: boolean }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   useEscape(open, () => setOpen(false), ref)
@@ -41,7 +41,7 @@ function Disclosure({ label, children, id, current }: { label: React.ReactNode; 
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((o) => !o)}
-        className={cx('inline-flex min-h-11 items-center gap-1.5 whitespace-nowrap px-2.5 font-display text-[0.9rem] font-semibold uppercase tracking-[0.1em] hover:text-gold-300', current && 'text-gold-300')}
+        className={cx('inline-flex min-h-11 items-center gap-1 whitespace-nowrap px-2 font-display text-[0.9rem] font-semibold uppercase tracking-[0.1em] hover:text-gold-300', current && 'text-gold-300', chip && 'ml-2 min-h-9 rounded-full border border-gold-400/40 bg-gold-400/5 px-3.5 text-[0.78rem] text-gold-200')}
       >
         {label}
         <span aria-hidden="true" className={cx('text-xs transition-transform', open && 'rotate-180')}>
@@ -58,6 +58,8 @@ function Disclosure({ label, children, id, current }: { label: React.ReactNode; 
 export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] }) {
   const pathname = usePathname() || '/'
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [hydrated, setHydrated] = useState(false)
+  useEffect(() => setHydrated(true), [])
   const mobileRef = useRef<HTMLDivElement>(null)
   useEscape(mobileOpen, () => setMobileOpen(false), mobileRef)
   useEffect(() => setMobileOpen(false), [pathname])
@@ -67,7 +69,7 @@ export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] })
   const divisions = DIVISION_LINKS.filter((d) => divisionsEnabled.includes(d.key))
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-night/92 backdrop-blur supports-[backdrop-filter]:bg-night/80">
+    <header data-hydrated={hydrated ? 'true' : undefined} className="sticky top-0 z-40 border-b border-white/10 bg-night/92 backdrop-blur supports-[backdrop-filter]:bg-night/80">
       <div className="container-k flex min-h-16 items-center gap-3">
         <Link href="/" className="inline-flex min-h-11 items-center">
           <Wordmark size="sm" />
@@ -76,7 +78,18 @@ export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] })
 
         {/* Business switcher (GW-04) */}
         <div className="hidden md:block">
-          <Disclosure id="business-switcher" label={<span><span className="sr-only">Business: </span><span className="hidden 2xl:inline">{active ? active.label : 'Our businesses'}</span><span className="2xl:hidden">{active ? active.short : 'Businesses'}</span></span>}>
+          <Disclosure
+            id="business-switcher"
+            chip
+            label={
+              <span className="inline-flex items-center gap-2">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7" /></svg>
+                <span className="sr-only">Business: </span>
+                <span className="hidden 2xl:inline">{active ? active.label : 'Our businesses'}</span>
+                <span className="2xl:hidden">{active ? active.short : 'Businesses'}</span>
+              </span>
+            }
+          >
             <p className="eyebrow px-3 py-2">Karat Racing businesses</p>
             <ul>
               {divisions.map((d) => (
@@ -120,7 +133,7 @@ export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] })
               <path d="m20 20-3.5-3.5" />
             </svg>
           </Link>
-          <Link href="/championship-team/contact" className="hidden min-h-11 items-center px-3 font-display text-[0.9rem] font-semibold uppercase tracking-[0.1em] hover:text-gold-300 sm:inline-flex">
+          <Link href="/championship-team/contact" className={cx('hidden min-h-11 items-center px-3 font-display text-[0.9rem] font-semibold uppercase tracking-[0.1em] hover:text-gold-300 sm:inline-flex', inTeam && 'xl:hidden 2xl:inline-flex')}>
             Contact
           </Link>
           {inTeam && (

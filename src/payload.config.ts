@@ -28,7 +28,8 @@ export default buildConfig({
   serverURL,
   admin: {
     user: Users.slug,
-    meta: { titleSuffix: ' — Karat Racing CMS' },
+    meta: { titleSuffix: ' — Karat Racing CMS', icons: [{ url: '/icon.png' }] },
+    components: { graphics: { Logo: '/components/admin/Logo', Icon: '/components/admin/Icon' } },
     importMap: { baseDir: path.resolve(dirname) },
     livePreview: undefined,
   },

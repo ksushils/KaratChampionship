@@ -18,6 +18,7 @@ for (const width of [375, 390, 768]) {
 test('mobile menu opens, lists businesses, and closes with Escape', async ({ page, context, baseURL }) => {
   await presetConsent(context, baseURL!)
   await page.goto('/championship-team')
+  await page.locator('header[data-hydrated]').waitFor()
   const btn = page.getByRole('button', { name: 'Open menu' })
   await btn.click()
   const menu = page.locator('#mobile-menu')

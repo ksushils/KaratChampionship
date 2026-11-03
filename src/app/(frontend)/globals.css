@@ -212,12 +212,17 @@
     border-bottom: 1px solid rgb(220 179 92 / 0.35);
     white-space: nowrap;
   }
+  .table-k tbody th {
+    border-bottom: 1px solid rgb(255 255 255 / 0.07);
+    white-space: normal;
+  }
   .table-k td {
     padding: 0.6rem 0.75rem;
     border-bottom: 1px solid rgb(255 255 255 / 0.07);
     vertical-align: top;
   }
-  .table-k tr.is-karat td {
+  .table-k tr.is-karat td,
+  .table-k tr.is-karat th {
     background: rgb(30 99 233 / 0.16);
   }
   .table-k tr.is-karat td:first-child {

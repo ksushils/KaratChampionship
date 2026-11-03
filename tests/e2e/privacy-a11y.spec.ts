@@ -24,6 +24,7 @@ test('#25 rejecting optional cookies prevents analytics requests; accepting load
 test('#26 keyboard: skip link, menu disclosure with Escape, focus visible', async ({ page, context, baseURL }) => {
   await presetConsent(context, baseURL!)
   await page.goto('/championship-team')
+  await page.locator('header[data-hydrated]').waitFor()
   await page.keyboard.press('Tab')
   const skip = page.getByRole('link', { name: 'Skip to main content' })
   await expect(skip).toBeFocused()

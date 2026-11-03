@@ -15,6 +15,7 @@ test('#1 visitor selects Championship Team from the gateway', async ({ page }) =
 
 test('#2 visitor switches from Championship Team to Testing without returning to the gateway', async ({ page }) => {
   await page.goto('/championship-team')
+  await page.locator('header[data-hydrated]').waitFor()
   await page.getByRole('button', { name: /Business:/ }).click()
   await page.getByRole('link', { name: 'Testing & Karat Academy' }).first().click()
   await expect(page).toHaveURL(/\/testing$/)

@@ -1,5 +1,5 @@
 export const DIVISION_LINKS = [
-  { key: 'championship-team', label: 'Championship Team', short: 'Team', href: '/championship-team' },
+  { key: 'championship-team', label: 'Championship Team', short: 'Racing Team', href: '/championship-team' },
   { key: 'testing', label: 'Testing & Karat Academy', short: 'Testing', href: '/testing' },
   { key: 'championship-organisation', label: 'Championship Series', short: 'Series', href: '/championship-organisation' },
 ] as const
@@ -18,6 +18,8 @@ export const TEAM_NAV: NavGroup[] = [
       { label: 'Facilities', href: '/championship-team/facilities' },
       { label: 'Driver development', href: '/championship-team/driver-development' },
       { label: 'Careers', href: '/championship-team/careers' },
+      { label: 'FAQs', href: '/championship-team/faqs' },
+      { label: 'Contact', href: '/championship-team/contact' },
     ],
   },
   {
