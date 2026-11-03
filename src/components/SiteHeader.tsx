@@ -69,8 +69,9 @@ export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] })
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-night/92 backdrop-blur supports-[backdrop-filter]:bg-night/80">
       <div className="container-k flex min-h-16 items-center gap-3">
-        <Link href="/" className="inline-flex min-h-11 items-center" aria-label="Karat Racing — home">
+        <Link href="/" className="inline-flex min-h-11 items-center">
           <Wordmark size="sm" />
+          <span className="sr-only"> home</span>
         </Link>
 
         {/* Business switcher (GW-04) */}

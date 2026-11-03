@@ -44,18 +44,14 @@ export function localToUtc(local: string, tz: string): Date {
   if (!isValidTimeZone(tz)) throw new Error(`Invalid IANA time zone "${tz}"`)
   const [, y, mo, d, h, mi, s] = m
   const naive = Date.UTC(+y, +mo - 1, +d, +h, +mi, s ? +s : 0)
-  // Two-pass: guess using the offset at the naive instant, then correct.
-  const off1 = tzOffsetMs(new Date(naive), tz)
-  let utc = naive - off1
-  const off2 = tzOffsetMs(new Date(utc), tz)
-  if (off2 !== off1) {
-    const alt = naive - off2
-    // Prefer the candidate that round-trips to the same wall-clock time; if neither does (gap), take the later.
-    const rt = (t: number) => formatInZone(new Date(t), tz, 'iso-local') === local.slice(0, 16)
-    if (rt(alt) && !rt(utc)) utc = alt
-    else if (rt(alt) && rt(utc)) utc = Math.min(alt, utc)
-    else if (!rt(alt) && !rt(utc)) utc = Math.max(alt, utc)
-  }
+  // Candidate offsets around the instant (covers DST transitions). Keep candidates that
+  // round-trip to the same wall-clock time; earliest wins (ambiguous hour). If none do
+  // (spring-forward gap), take the latest, i.e. move forward as clocks do.
+  const offsets = new Set([tzOffsetMs(new Date(naive - 86_400_000), tz), tzOffsetMs(new Date(naive), tz), tzOffsetMs(new Date(naive + 86_400_000), tz)])
+  const candidates = [...offsets].map((o) => naive - o)
+  const want = local.slice(0, 16)
+  const valid = candidates.filter((t) => formatInZone(new Date(t), tz, 'iso-local') === want)
+  const utc = valid.length ? Math.min(...valid) : Math.max(...candidates)
   return new Date(utc)
 }
 

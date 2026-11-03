@@ -1,67 +1,68 @@
-# Payload Blank Template
+# Karat Racing — website & CMS
 
-This template comes configured with the bare minimum to get started on anything you need.
+The Karat Racing website. It covers one organisation with three separate businesses:
+
+| Division | Route | Scope in this build |
+|---|---|---|
+| Championship Team | `/championship-team/**` | Fully implemented: programmes, drivers, calendar, events, Race Centre, results, standings, news, media, press, partners, hospitality, careers, enquiry funnels |
+| Testing & Karat Academy | `/testing`, `/testing/enquire` | Introductory landing page with a working enquiry form. The data model is reserved for the future fleet/availability work |
+| Championship Series (India) | `/championship-organisation`, `/championship-organisation/enquire` | Introductory landing page with a working enquiry form. Kept explicitly separate from Indian F4 |
+
+The visual identity uses the owner-supplied **Karat "K" logo** and the **blue / gold livery** (`scripts/assets/source-*.jpg`), on a dark navy base with a restrained cyan edge accent.
+
+## Stack
+
+- **Next.js 16** (App Router, React 19, TypeScript) with **Tailwind CSS 4** design tokens
+- **Payload CMS 3.92** embedded at `/admin`. Postgres via `@payloadcms/db-postgres`, Lexical rich text
+- **PostgreSQL 16**
+- **Zod** validation shared between client and server
+- **Vitest** (unit and integration against real Postgres) and **Playwright** with axe-core for E2E and accessibility
 
 ## Quick start
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+```bash
+pnpm install
+```
 
-## Quick Start - local setup
+```bash
+cp .env.example .env   # then set PAYLOAD_SECRET, DATABASE_URL, SEED_ADMIN_* 
+```
 
-To spin up this template locally, follow these steps:
+```bash
+pnpm seed:demo         # base content + clearly-labelled fictional fixtures (dev only)
+```
 
-### Clone
+```bash
+pnpm dev               # http://localhost:3000  — CMS at http://localhost:3000/admin
+```
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+Use `pnpm seed` (no demo fixtures) for staging and production. To rebuild brand images from the source files, run `node scripts/build-brand-assets.mjs`.
 
-### Development
+## Scripts
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+| Command | Purpose |
+|---|---|
+| `pnpm dev` / `pnpm build` / `pnpm start` | Next.js development server, production build, production server |
+| `pnpm seed` | Production-safe base content: divisions, championships, programmes (status *Intended*), FAQs, source register |
+| `pnpm seed:demo` | Adds fictional fixtures (`isDemo=true`, titled "[DEMO]"). Refuses to run when `APP_ENV=production` |
+| `pnpm migrate:create` / `pnpm migrate` | Create / apply database migrations (staging and production) |
+| `pnpm generate:types` / `pnpm generate:importmap` | Regenerate Payload types and the admin import map |
+| `pnpm test:unit` / `pnpm test:int` / `pnpm test:e2e` | Test suites (see TEST-PLAN.md) |
+| `pnpm tsx scripts/check-production-content.ts` | Launch gate: fails if any demo fixture exists |
+| `pnpm check:links` | Internal broken-link crawl against a running site |
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+## Documentation
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
-
-#### Docker (Optional)
-
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
-
-To do so, follow these steps:
-
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
-
-## How it works
-
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
-
-### Collections
-
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
-
-- #### Users (Authentication)
-
-  Users are auth-enabled collections that have access to the admin panel.
-
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/3.x/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
-
-- #### Media
-
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
-
-### Docker
-
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
-
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
-
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
-
-## Questions
-
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+| Document | Contents |
+|---|---|
+| [ARCHITECTURE.md](ARCHITECTURE.md) | System design, routes, data model, caching |
+| [REQUIREMENTS.md](REQUIREMENTS.md) | Requirement traceability (ID → status → test) |
+| [CONTENT-DEPENDENCIES.md](CONTENT-DEPENDENCIES.md) | What the owner must supply before launch |
+| [DATA-SOURCES.md](DATA-SOURCES.md) | Research register of official sources |
+| [ASSET-RIGHTS.md](ASSET-RIGHTS.md) | Brand and media assets and their rights status |
+| [CMS-EDITOR-GUIDE.md](CMS-EDITOR-GUIDE.md) | How non-technical staff run the site |
+| [INTEGRATIONS.md](INTEGRATIONS.md) | Email, analytics, timing and other adapters, including failure behaviour |
+| [SECURITY.md](SECURITY.md) / [PRIVACY-IMPLEMENTATION.md](PRIVACY-IMPLEMENTATION.md) | Controls |
+| [TEST-PLAN.md](TEST-PLAN.md) | Acceptance-test mapping |
+| [DEPLOYMENT.md](DEPLOYMENT.md) / [LAUNCH-CHECKLIST.md](LAUNCH-CHECKLIST.md) | Environments, backups, rollback, go-live |
+| [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md) | Open items and future scope |

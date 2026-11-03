@@ -163,7 +163,7 @@ export function EnquiryForm({ category, steps: rawSteps, defaults = {}, initialK
       )}
 
       {(errorList.length > 0 || (state && !state.ok)) && (
-        <div ref={summaryRef} tabIndex={-1} role="alert" className="rounded-card border-2 border-danger/70 bg-danger/10 p-4">
+        <div ref={summaryRef} tabIndex={-1} role="alert" data-testid="form-errors" className="rounded-card border-2 border-danger/70 bg-danger/10 p-4">
           <p className="font-semibold">{state && !state.ok && !Object.keys(clientErrors).length ? state.message : 'Please correct the following:'}</p>
           {errorList.length > 0 && (
             <ul className="mt-2 list-disc pl-5 text-sm">
