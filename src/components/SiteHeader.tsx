@@ -41,7 +41,7 @@ function Disclosure({ label, children, id, current }: { label: React.ReactNode; 
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((o) => !o)}
-        className={cx('inline-flex min-h-11 items-center gap-1.5 px-3 font-display text-[0.9rem] font-semibold uppercase tracking-[0.1em] hover:text-gold-300', current && 'text-gold-300')}
+        className={cx('inline-flex min-h-11 items-center gap-1.5 whitespace-nowrap px-2.5 font-display text-[0.9rem] font-semibold uppercase tracking-[0.1em] hover:text-gold-300', current && 'text-gold-300')}
       >
         {label}
         <span aria-hidden="true" className={cx('text-xs transition-transform', open && 'rotate-180')}>
@@ -75,7 +75,7 @@ export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] })
 
         {/* Business switcher (GW-04) */}
         <div className="hidden md:block">
-          <Disclosure id="business-switcher" label={<span><span className="sr-only">Business: </span>{active ? active.label : 'Our businesses'}</span>}>
+          <Disclosure id="business-switcher" label={<span><span className="sr-only">Business: </span><span className="hidden 2xl:inline">{active ? active.label : 'Our businesses'}</span><span className="2xl:hidden">{active ? active.short : 'Businesses'}</span></span>}>
             <p className="eyebrow px-3 py-2">Karat Racing businesses</p>
             <ul>
               {divisions.map((d) => (
@@ -123,7 +123,7 @@ export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] })
             Contact
           </Link>
           {inTeam && (
-            <Link href="/championship-team/race-with-us" className={buttonClass('gold', 'hidden px-4 lg:inline-flex')}>
+            <Link href="/championship-team/race-with-us" className={buttonClass('gold', 'hidden whitespace-nowrap px-4 lg:inline-flex')}>
               Race with us
             </Link>
           )}
