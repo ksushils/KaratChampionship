@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { recordConsent } from '@/app/(frontend)/actions'
-import { readConsent, writeConsent, type Consent } from './analytics'
+import { readConsent, track, writeConsent, type Consent } from './analytics'
 import { buttonClass } from './ui'
 
 const SRC = process.env.NEXT_PUBLIC_ANALYTICS_SRC
@@ -36,7 +36,16 @@ export function ConsentManager() {
       setPrefsOpen(true)
     }
     window.addEventListener('karat:open-consent', open)
-    return () => window.removeEventListener('karat:open-consent', open)
+    // Declarative click tracking: <a data-track="event_name"> (consent-gated inside track()).
+    const onClick = (e: MouseEvent) => {
+      const el = (e.target as HTMLElement | null)?.closest<HTMLElement>('[data-track]')
+      if (el?.dataset.track) track(el.dataset.track, { path: location.pathname })
+    }
+    document.addEventListener('click', onClick)
+    return () => {
+      window.removeEventListener('karat:open-consent', open)
+      document.removeEventListener('click', onClick)
+    }
   }, [])
 
   useEffect(() => {

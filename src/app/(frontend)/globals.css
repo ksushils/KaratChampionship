@@ -79,6 +79,19 @@
     outline-offset: 3px;
     border-radius: 2px;
   }
+  /* Grid/flex children may shrink below their content width (prevents page overflow from tables/selects). */
+  .grid > *,
+  label.grid {
+    min-width: 0;
+  }
+  select {
+    max-width: 100%;
+  }
+  /* Keep visually-hidden captions inside their scroll container. */
+  [role='region'],
+  .overflow-x-auto {
+    position: relative;
+  }
   ::selection {
     background: var(--color-gold-400);
     color: var(--color-night);
