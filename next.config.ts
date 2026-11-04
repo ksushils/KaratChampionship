@@ -38,6 +38,12 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     localPatterns: [{ pathname: '/api/media/file/**' }, { pathname: '/brand/**' }],
   },
+  async redirects() {
+    return [
+      { source: '/testing', destination: '/testing-academy', permanent: true },
+      { source: '/testing/enquire', destination: '/testing-academy/enquire', permanent: true },
+    ]
+  },
   async headers() {
     return [
       {

@@ -5,7 +5,7 @@ The Karat Racing website. It covers one organisation with three separate busines
 | Division | Route | Scope in this build |
 |---|---|---|
 | Championship Team | `/championship-team/**` | Fully implemented: programmes, drivers, calendar, events, Race Centre, results, standings, news, media, press, partners, hospitality, careers, enquiry funnels |
-| Testing & Karat Academy | `/testing`, `/testing/enquire` | Introductory landing page with a working enquiry form. The data model is reserved for the future fleet/availability work |
+| Testing & Karat Academy | `/testing-academy`, `/testing-academy/enquire` | Introductory landing page with a working enquiry form. The data model is reserved for the future fleet/availability work |
 | Championship Series (India) | `/championship-organisation`, `/championship-organisation/enquire` | Introductory landing page with a working enquiry form. Kept explicitly separate from Indian F4 |
 
 The visual identity uses the owner-supplied **Karat "K" logo** and the **blue / gold livery** (`scripts/assets/source-*.jpg`), on a dark navy base with a restrained cyan edge accent.

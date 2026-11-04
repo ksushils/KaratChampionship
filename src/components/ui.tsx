@@ -26,6 +26,7 @@ export function ButtonLink({ href, children, variant = 'gold', className, ...res
     return (
       <a href={href} className={buttonClass(variant, className)} rel="noopener noreferrer" target="_blank" {...rest}>
         {children}
+        <span aria-hidden="true">↗</span>
         <span className="sr-only"> (opens in a new tab)</span>
       </a>
     )

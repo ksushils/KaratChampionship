@@ -15,22 +15,25 @@ test('#1 visitor selects Championship Team from the gateway', async ({ page }) =
   await expect(bar.getByRole('link', { name: 'Championship Team' })).toHaveAttribute('aria-current', 'page')
 })
 
-test('#2 business bar switches business; Testing opens in a new tab', async ({ page, context }) => {
+test('#2 menu opens the on-site Testing page; its button opens the Testing site in a new tab', async ({ page, context }) => {
   await context.route(`${TESTING_URL}/**`, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: '<title>Testing</title>' }))
   await context.route(TESTING_URL, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: '<title>Testing</title>' }))
   await page.goto('/championship-team')
   await page.locator('header[data-hydrated]').waitFor()
   const bar = page.getByRole('navigation', { name: 'Karat Racing businesses' })
-  const testing = bar.getByRole('link', { name: /Testing & Karat Academy/ })
-  await expect(testing).toHaveAttribute('target', '_blank')
-  await expect(testing).toHaveAttribute('rel', /noopener/)
-  const [popup] = await Promise.all([context.waitForEvent('page'), testing.click()])
+  const testing = bar.getByRole('link', { name: 'Testing & Karat Academy' })
+  await expect(testing).not.toHaveAttribute('target', '_blank')
+  await testing.click()
+  await expect(page).toHaveURL(/\/testing-academy$/)
+  await expect(page.getByRole('navigation', { name: 'Karat Racing businesses' }).getByRole('link', { name: 'Testing & Karat Academy' })).toHaveAttribute('aria-current', 'page')
+  const visit = page.getByRole('link', { name: /Click here to visit our Testing & Karat Academy/ }).first()
+  await expect(visit).toHaveAttribute('target', '_blank')
+  const [popup] = await Promise.all([context.waitForEvent('page'), visit.click()])
   await expect(popup).toHaveURL(new RegExp(TESTING_URL.replace(/[.]/g, '\\.')))
-  await expect(page).toHaveURL(/\/championship-team$/) // original tab stays put
-  // Internal businesses navigate in the same tab
-  await bar.getByRole('link', { name: 'Championship Series' }).click()
-  await expect(page).toHaveURL(/\/championship-organisation$/)
-  await expect(page.getByRole('navigation', { name: 'Karat Racing businesses' }).getByRole('link', { name: 'Championship Series' })).toHaveAttribute('aria-current', 'page')
+  await expect(page).toHaveURL(/\/testing-academy$/) // original tab stays on our site
+  // Old /testing URL forwards to the on-site page
+  await page.goto('/testing')
+  await expect(page).toHaveURL(/\/testing-academy$/)
 })
 
 test('#3 #4 programmes show statuses and none is presented as a confirmed entry', async ({ page }) => {

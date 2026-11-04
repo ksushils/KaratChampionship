@@ -39,7 +39,7 @@ test('#26 keyboard: skip link, menu disclosure with Escape, focus visible', asyn
   await expect(btn).toHaveAttribute('aria-expanded', 'false')
 })
 
-for (const path of ['/', '/championship-team', '/championship-team/programmes/italian-f4', '/championship-team/race-with-us', '/championship-team/results', '/championship-team/events/demo-round-3-monza', '/championship-team/partner-with-us', '/testing', '/championship-organisation']) {
+for (const path of ['/', '/championship-team', '/championship-team/programmes/italian-f4', '/championship-team/race-with-us', '/championship-team/results', '/championship-team/events/demo-round-3-monza', '/championship-team/partner-with-us', '/testing-academy', '/championship-organisation']) {
   test(`axe: no serious/critical violations on ${path}`, async ({ page, context, baseURL }) => {
     await presetConsent(context, baseURL!)
     await page.goto(path)

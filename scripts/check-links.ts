@@ -3,7 +3,7 @@
  *   BASE_URL=http://localhost:3000 pnpm check:links
  */
 const BASE = process.env.BASE_URL || 'http://localhost:3000'
-const START = ['/', '/championship-team', '/testing', '/championship-organisation', '/sitemap.xml']
+const START = ['/', '/championship-team', '/testing-academy', '/championship-organisation', '/sitemap.xml']
 const seen = new Set<string>()
 const broken: { url: string; status: number; from: string }[] = []
 const queue: { path: string; from: string }[] = START.map((p) => ({ path: p, from: '(start)' }))

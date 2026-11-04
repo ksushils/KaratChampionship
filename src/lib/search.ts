@@ -1,6 +1,6 @@
 import 'server-only'
 import { publicFind } from './data'
-import { TESTING_URL } from './nav'
+import { TESTING_PAGE } from './nav'
 import type { Article, Driver, Event, Faq, Programme } from '@/payload-types'
 
 export type SearchHit = { type: string; title: string; href: string; excerpt?: string | null }
@@ -13,7 +13,7 @@ const STATIC_PAGES: SearchHit[] = [
   { type: 'Page', title: 'Calendar', href: '/championship-team/calendar', excerpt: 'Race weekends and team events' },
   { type: 'Page', title: 'Careers', href: '/championship-team/careers', excerpt: 'Jobs and vacancies' },
   { type: 'Page', title: 'Press', href: '/championship-team/press', excerpt: 'Media enquiries and downloads' },
-  { type: 'Page', title: 'Testing & Karat Academy', href: TESTING_URL, excerpt: 'Testing and driver development' },
+  { type: 'Page', title: 'Testing & Karat Academy', href: TESTING_PAGE, excerpt: 'Testing and driver development' },
   { type: 'Page', title: 'Championship Series — India', href: '/championship-organisation', excerpt: 'Championship organisation project in India' },
   { type: 'Page', title: 'Safeguarding', href: '/safeguarding', excerpt: 'Young driver welfare and concerns' },
   { type: 'Page', title: 'Contact', href: '/championship-team/contact', excerpt: 'Contact routes' },

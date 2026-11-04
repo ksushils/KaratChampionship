@@ -4,7 +4,7 @@ import { getProgramme } from '@/lib/data'
 import { GeneralEnquiryForm } from '@/components/forms'
 import { Breadcrumbs, Notice, PageHero, Section } from '@/components/ui'
 
-export const metadata: Metadata = { title: 'Testing enquiry', description: 'Make a testing or driver-development enquiry with Karat Racing.', alternates: { canonical: '/testing/enquire' } }
+export const metadata: Metadata = { title: 'Testing enquiry', description: 'Make a testing or driver-development enquiry with Karat Racing.', alternates: { canonical: '/testing-academy/enquire' } }
 
 export default async function TestingEnquire({ searchParams }: { searchParams: Promise<{ programme?: string; from?: string }> }) {
   const sp = await searchParams
@@ -12,7 +12,7 @@ export default async function TestingEnquire({ searchParams }: { searchParams: P
   const p = sp.programme ? await getProgramme(sp.programme) : null
   return (
     <>
-      <Breadcrumbs items={[{ label: 'Testing & Karat Academy', href: '/testing' }, { label: 'Enquire' }]} />
+      <Breadcrumbs items={[{ label: 'Testing & Karat Academy', href: '/testing-academy' }, { label: 'Enquire' }]} />
       <PageHero eyebrow="Testing & Karat Academy" title="Testing enquiry" intro="Tell us what you want from a test. We will reply with what is possible. This is an enquiry, not a booking." />
       <Section className="!pt-8">
         <div className="grid max-w-3xl gap-6">

@@ -3,10 +3,11 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getDivision, getFaqs } from '@/lib/data'
 import { DIVISION_STATUS_LABEL } from '@/lib/status'
+import { TESTING_URL } from '@/lib/nav'
 import { FaqList } from '@/components/FaqList'
 import { ButtonLink, Card, Notice, Section, SectionHeading, StatusBadge } from '@/components/ui'
 
-export const metadata: Metadata = { title: 'Testing & Karat Academy', description: 'Karat Racing’s proposed testing and driver-development business using Karat-operated and partner-provided single-seaters.', alternates: { canonical: '/testing' } }
+export const metadata: Metadata = { title: 'Testing & Karat Academy', description: 'Karat Racing’s proposed testing and driver-development business using Karat-operated and partner-provided single-seaters.', alternates: { canonical: '/testing-academy' } }
 
 export default async function Testing() {
   const [d, faqs] = await Promise.all([getDivision('testing'), getFaqs('testing')])
@@ -24,8 +25,13 @@ export default async function Testing() {
             <StatusBadge status={d?.status} label={DIVISION_STATUS_LABEL[d?.status ?? 'planned']} className="mt-5" />
             <p className="text-mist mt-5 max-w-xl text-lg">{d?.description}</p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <ButtonLink href="/testing/enquire">Make a testing enquiry</ButtonLink>
-              <ButtonLink href="/championship-team" variant="outline">Championship Team</ButtonLink>
+              {/* Opens the Testing & Karat Academy site in a new tab (ButtonLink handles external links). */}
+              <ButtonLink href={TESTING_URL} data-track="testing_site_clicked">
+                Click here to visit our Testing &amp; Karat Academy
+              </ButtonLink>
+              <ButtonLink href="/testing-academy/enquire" variant="outline">
+                Make an enquiry
+              </ButtonLink>
             </div>
           </div>
           <Image src="/brand/car-aerial-dark.jpg" alt="Karat Racing livery concept seen from above" width={940} height={300} priority className="h-auto w-full rounded-card" />
@@ -56,7 +62,7 @@ export default async function Testing() {
             <p className="text-mist">Testing may use cars owned or operated by Karat Racing, or cars provided by partners. Each proposal will say clearly whose car it is and who runs it.</p>
           </div>
           <div className="grid content-start gap-3">
-            <Notice tone="blue" title="Not available yet">We do not take online bookings, publish test prices, show live car availability or take deposits. Circuit access and eligibility are confirmed for each test.</Notice>
+            <Notice tone="blue" title="Quotes and bookings">Quotes and bookings are handled on the Testing &amp; Karat Academy website. Circuit access and eligibility are confirmed for each test.</Notice>
             <Notice tone="warn" title="Safety">Motorsport testing is dangerous. Every participant must meet the eligibility, licensing and safety requirements for the car and the circuit.</Notice>
           </div>
         </div>
@@ -65,6 +71,18 @@ export default async function Testing() {
         <SectionHeading id="t-dev" eyebrow="Connection" title="Testing and racing" intro="Testing is a separate service from a race season. Some drivers go on to a Championship Team programme, but a test does not commit you to one, and it does not guarantee a race seat." />
         <ButtonLink href="/championship-team/driver-development" variant="outline">How we approach driver development</ButtonLink>
         {faqs.length > 0 && <div className="mt-10 max-w-3xl"><FaqList faqs={faqs} /></div>}
+      </Section>
+      <Section className="!pt-0">
+        <div className="clip-angle edge-glow flex flex-col items-start gap-5 bg-gradient-to-br from-navy-700 via-navy-800 to-ink-900 p-8 md:flex-row md:items-center md:justify-between md:p-12">
+          <div>
+            <p className="eyebrow mb-2">Testing &amp; Karat Academy</p>
+            <h2 className="font-display text-3xl font-bold uppercase">Ready to get on track?</h2>
+            <p className="text-mist mt-2 max-w-xl">Programmes, quotes and bookings are on our dedicated Testing &amp; Karat Academy website. It opens in a new tab.</p>
+          </div>
+          <ButtonLink href={TESTING_URL} data-track="testing_site_clicked">
+            Click here to visit our Testing &amp; Karat Academy
+          </ButtonLink>
+        </div>
       </Section>
     </>
   )

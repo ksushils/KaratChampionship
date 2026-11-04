@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { presetConsent } from './helpers'
 
-const PATHS = ['/', '/championship-team', '/championship-team/programmes', '/championship-team/programmes/gb4', '/championship-team/calendar?view=month', '/championship-team/results', '/championship-team/standings', '/championship-team/events/demo-round-3-monza', '/championship-team/race-centre', '/championship-team/race-with-us', '/championship-team/partner-with-us', '/championship-team/news', '/testing', '/championship-organisation']
+const PATHS = ['/', '/championship-team', '/championship-team/programmes', '/championship-team/programmes/gb4', '/championship-team/calendar?view=month', '/championship-team/results', '/championship-team/standings', '/championship-team/events/demo-round-3-monza', '/championship-team/race-centre', '/championship-team/race-with-us', '/championship-team/partner-with-us', '/championship-team/news', '/testing-academy', '/championship-organisation']
 
 for (const width of [375, 390, 768]) {
   test(`#27 no horizontal page overflow at ${width}px`, async ({ page, context, baseURL }) => {

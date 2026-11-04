@@ -5,14 +5,14 @@ import { DIVISION_STATUS_LABEL } from '@/lib/status'
 import { StatusBadge, buttonClass } from '@/components/ui'
 import { DivisionLink } from './DivisionLink'
 import { HeroVideo } from '@/components/HeroVideo'
-import { TESTING_URL } from '@/lib/nav'
+import { TESTING_PAGE } from '@/lib/nav'
 
 const IMG: Record<string, string> = {
   'championship-team': '/brand/car-side-light.jpg',
   testing: '/brand/car-aerial-dark.jpg',
   'championship-organisation': '/brand/car-top-light.jpg',
 }
-const HREF: Record<string, string> = { 'championship-team': '/championship-team', testing: TESTING_URL, 'championship-organisation': '/championship-organisation' }
+const HREF: Record<string, string> = { 'championship-team': '/championship-team', testing: TESTING_PAGE, 'championship-organisation': '/championship-organisation' }
 
 export default async function Gateway() {
   const divisions = (await getDivisions()).filter((d) => d.enabled !== false)

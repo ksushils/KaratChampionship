@@ -35,7 +35,7 @@ Every route in brief §5.2 is implemented:
 
 - `/`: gateway
 - `/championship-team`: about, heritage, people, facilities, programmes, programmes/[programme], programmes/[programme]/[season], drivers, drivers/[driver], alumni, calendar (`feed.ics`), events/[event] (`/ics`), results, standings, race-centre, driver-development, race-with-us, partners, partners/[partner], partner-with-us, hospitality, news (`rss.xml`), news/[article], media, media/[collection], press, careers, careers/[vacancy], faqs, contact
-- `/testing`, `/testing/enquire`
+- `/testing-academy`, `/testing-academy/enquire`
 - `/championship-organisation`, `/championship-organisation/enquire`
 - `/privacy`, `/cookies`, `/terms`, `/accessibility`, `/safeguarding`, `/search`
 - `/sitemap.xml`, `/robots.txt`
