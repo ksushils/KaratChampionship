@@ -4,6 +4,7 @@ import { getDivisions } from '@/lib/data'
 import { DIVISION_STATUS_LABEL } from '@/lib/status'
 import { StatusBadge, buttonClass } from '@/components/ui'
 import { DivisionLink } from './DivisionLink'
+import { HeroVideo } from '@/components/HeroVideo'
 import { TESTING_URL } from '@/lib/nav'
 
 const IMG: Record<string, string> = {
@@ -17,31 +18,33 @@ export default async function Gateway() {
   const divisions = (await getDivisions()).filter((d) => d.enabled !== false)
   return (
     <>
-      <section className="relative overflow-hidden" aria-labelledby="gw-title">
-        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_40%,rgba(30,99,233,0.28),transparent_60%),radial-gradient(ellipse_at_10%_90%,rgba(220,179,92,0.12),transparent_50%)]" />
-        <div className="container-k relative grid items-center gap-8 pb-6 pt-12 md:pt-20 lg:grid-cols-[1fr_1.25fr]">
-          <div>
+      <section className="relative isolate flex min-h-[34rem] items-center overflow-hidden md:min-h-[40rem]" aria-labelledby="gw-title">
+        {/* Background video made from the Karat car photo; the poster shows the same photo while loading. */}
+        <HeroVideo className="absolute inset-0 -z-20 h-full w-full object-cover object-[68%_50%]" />
+        <p className="sr-only">Background video: the Karat Racing blue and gold livery concept car, with a slow camera move and a light sweep.</p>
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-night/55 md:bg-transparent md:bg-gradient-to-r md:from-night md:from-15% md:via-night/60 md:via-45% md:to-night/0 md:to-70%" />
+        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-night to-transparent" />
+        <div aria-hidden="true" className="absolute inset-x-0 top-0 -z-10 h-24 bg-gradient-to-b from-night/80 to-transparent" />
+        <div className="container-k relative py-16 md:py-24">
+          <div className="max-w-2xl">
             <p className="eyebrow mb-4">Performance / Precision / Karat</p>
-            <h1 id="gw-title" className="font-display text-[length:var(--text-display-xl)] font-extrabold uppercase leading-[0.95]">
+            <h1 id="gw-title" className="font-display text-[length:var(--text-display-xl)] font-extrabold uppercase leading-[0.95] drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
               <span className="text-gold-metal">Karat</span> <span className="block text-white">Racing</span>
             </h1>
-            <p className="text-mist mt-6 max-w-xl text-lg">
+            <p className="mt-6 max-w-xl text-lg text-white/85">
               One motorsport organisation, three separate businesses: a championship team, a testing and driver-development academy, and a plan for a new championship series in India.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/championship-team" className={buttonClass('gold')}>
                 Championship Team
               </Link>
-              <Link href="/championship-team/race-with-us" className={buttonClass('outline')}>
+              <Link href="/championship-team/race-with-us" className={buttonClass('outline', 'bg-night/40 backdrop-blur-sm')}>
                 Discuss your race programme
               </Link>
             </div>
           </div>
-          <div className="relative">
-            <Image src="/brand/car-side-dark.jpg" alt="Karat Racing livery concept: a blue and gold single-seater, side view" width={1024} height={331} priority sizes="(min-width: 1024px) 60vw, 100vw" className="h-auto w-full rounded-card [mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)]" />
-            <p className="text-mist mt-2 text-right text-xs">Livery concept</p>
-          </div>
         </div>
+        <p className="absolute bottom-5 left-4 text-xs text-white/60 md:left-8">Livery concept</p>
       </section>
 
       <section aria-labelledby="pathways-title" className="pb-20 pt-6">
