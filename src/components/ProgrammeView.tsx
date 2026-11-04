@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getArticles, getEngagements, getEvents, getFaqs, getProgramme, getProgrammeSeasons, getResultSets, publicFind } from '@/lib/data'
+import { TESTING_ENQUIRE_URL } from '@/lib/nav'
 import { PROGRAMME_STATUS_LABEL, SEAT_LABEL } from '@/lib/status'
 import type { Championship, ChampionshipSeason, Driver, MediaCollection, Source } from '@/payload-types'
 import { ArticleCard, DriverCard, EventRow, mediaOf } from './cards'
@@ -77,7 +78,7 @@ export async function ProgrammeView({ slug, seasonParam }: { slug: string; seaso
             {!isFuture && (
               <div className="mt-7 flex flex-wrap gap-3">
                 <ButtonLink href={enquire}>Discuss this programme</ButtonLink>
-                <ButtonLink href={`/testing/enquire?from=${encodeURIComponent(`programme:${p.slug}`)}&programme=${p.slug}`} variant="outline" data-track="testing_handoff_clicked">
+                <ButtonLink href={TESTING_ENQUIRE_URL} variant="outline" data-track="testing_handoff_clicked">
                   Ask about testing first
                 </ButtonLink>
               </div>

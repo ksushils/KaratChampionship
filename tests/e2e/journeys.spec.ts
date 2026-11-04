@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { presetConsent } from './helpers'
+import { TESTING_ENQUIRE_URL, TESTING_URL } from '../../src/lib/nav'
 
 test.beforeEach(async ({ context, baseURL }) => presetConsent(context, baseURL!))
 
@@ -17,9 +18,8 @@ test('#2 visitor switches from Championship Team to Testing without returning to
   await page.goto('/championship-team')
   await page.locator('header[data-hydrated]').waitFor()
   await page.getByRole('button', { name: /Business:/ }).click()
-  await page.getByRole('link', { name: 'Testing & Karat Academy' }).first().click()
-  await expect(page).toHaveURL(/\/testing$/)
-  await expect(page.getByRole('heading', { level: 1 })).toContainText(/performance/i)
+  // Testing & Karat Academy is its own booking site (testing.karatracing.com), so the switcher links out to it
+  await expect(page.getByRole('link', { name: 'Testing & Karat Academy' }).first()).toHaveAttribute('href', TESTING_URL)
 })
 
 test('#3 #4 programmes show statuses and none is presented as a confirmed entry', async ({ page }) => {
@@ -115,10 +115,8 @@ test('#28 search returns public content only', async ({ page }) => {
 
 test('CHAMP-20 testing hand-off keeps programme context and goes to the Testing division', async ({ page }) => {
   await page.goto('/championship-team/programmes/italian-f4')
-  await page.getByRole('link', { name: 'Ask about testing first' }).click()
-  await expect(page).toHaveURL(/\/testing\/enquire/)
-  await expect(page.getByText(/You came from the/)).toContainText('Italian F4')
-  await expect(page.getByText('You are viewing:').locator('..')).toContainText('Testing')
+  // The hand-off goes to the Testing booking site's quote form
+  await expect(page.getByRole('link', { name: 'Ask about testing first' })).toHaveAttribute('href', TESTING_ENQUIRE_URL)
 })
 
 test('JOB-06 closed vacancies refuse applications', async ({ page }) => {

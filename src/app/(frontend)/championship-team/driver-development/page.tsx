@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { getSettings } from '@/lib/data'
+import { TESTING_ENQUIRE_URL } from '@/lib/nav'
 import { Breadcrumbs, ButtonLink, Card, Notice, PageHero, Section, SectionHeading } from '@/components/ui'
 
 export const metadata: Metadata = { title: 'Driver development', description: 'How Karat Racing supports driver development: karting transition, engineering collaboration, data review and family information.', alternates: { canonical: '/championship-team/driver-development' } }
@@ -17,7 +18,7 @@ export default async function Development() {
       <Breadcrumbs items={[{ label: 'Championship Team', href: '/championship-team' }, { label: 'Driver development' }]} />
       <PageHero eyebrow="Development" title="Driver development" intro="What we focus on when helping a driver improve, written plainly. It describes how we work, not promised outcomes.">
         <ButtonLink href="/championship-team/race-with-us">Discuss your race programme</ButtonLink>
-        <ButtonLink href="/testing/enquire?from=driver-development" variant="outline" data-track="testing_handoff_clicked">
+        <ButtonLink href={TESTING_ENQUIRE_URL} variant="outline" data-track="testing_handoff_clicked">
           Standalone testing enquiry
         </ButtonLink>
       </PageHero>

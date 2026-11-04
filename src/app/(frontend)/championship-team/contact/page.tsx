@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { randomUUID } from 'node:crypto'
 import { getSettings } from '@/lib/data'
+import { TESTING_ENQUIRE_URL } from '@/lib/nav'
 import { GeneralEnquiryForm } from '@/components/forms'
 import { Breadcrumbs, Card, PageHero, Section } from '@/components/ui'
 
@@ -13,7 +14,7 @@ const ROUTES = [
   ['Hospitality', 'Race-weekend guests', '/championship-team/hospitality'],
   ['Media', 'Press and interview requests', '/championship-team/press'],
   ['Careers', 'Open roles', '/championship-team/careers'],
-  ['Testing', 'Testing & Karat Academy', '/testing/enquire'],
+  ['Testing', 'Testing & Karat Academy', TESTING_ENQUIRE_URL],
   ['Championship Series', 'Building racing in India', '/championship-organisation/enquire'],
   ['Safeguarding', 'Raise a welfare concern', '/safeguarding'],
 ] as const

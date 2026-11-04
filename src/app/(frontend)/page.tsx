@@ -4,13 +4,14 @@ import { getDivisions } from '@/lib/data'
 import { DIVISION_STATUS_LABEL } from '@/lib/status'
 import { StatusBadge, buttonClass } from '@/components/ui'
 import { DivisionLink } from './DivisionLink'
+import { TESTING_URL } from '@/lib/nav'
 
 const IMG: Record<string, string> = {
   'championship-team': '/brand/car-side-light.jpg',
   testing: '/brand/car-aerial-dark.jpg',
   'championship-organisation': '/brand/car-top-light.jpg',
 }
-const HREF: Record<string, string> = { 'championship-team': '/championship-team', testing: '/testing', 'championship-organisation': '/championship-organisation' }
+const HREF: Record<string, string> = { 'championship-team': '/championship-team', testing: TESTING_URL, 'championship-organisation': '/championship-organisation' }
 
 export default async function Gateway() {
   const divisions = (await getDivisions()).filter((d) => d.enabled !== false)

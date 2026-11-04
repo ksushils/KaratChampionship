@@ -1,6 +1,10 @@
+/** Testing & Karat Academy runs as its own booking site (the Karat Racing app), not as pages on this site. */
+export const TESTING_URL = process.env.NEXT_PUBLIC_TESTING_URL || 'https://testing.karatracing.com'
+export const TESTING_ENQUIRE_URL = `${TESTING_URL}/request-a-quote`
+
 export const DIVISION_LINKS = [
   { key: 'championship-team', label: 'Championship Team', short: 'Racing Team', href: '/championship-team' },
-  { key: 'testing', label: 'Testing & Karat Academy', short: 'Testing', href: '/testing' },
+  { key: 'testing', label: 'Testing & Karat Academy', short: 'Testing', href: TESTING_URL },
   { key: 'championship-organisation', label: 'Championship Series', short: 'Series', href: '/championship-organisation' },
 ] as const
 
