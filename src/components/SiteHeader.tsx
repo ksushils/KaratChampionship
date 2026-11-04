@@ -56,6 +56,37 @@ function Disclosure({ label, children, id, current, chip }: { label: React.React
   )
 }
 
+type Div = (typeof DIVISION_LINKS)[number]
+function BusinessLinks({ divisions, activeKey, className, short }: { divisions: readonly Div[]; activeKey?: string; className?: string; short?: boolean }) {
+  return (
+    <nav aria-label="Karat Racing businesses" className={className}>
+      {divisions.map((d) => {
+        const current = activeKey === d.key
+        return (
+          <SmartLink
+            key={d.key}
+            href={d.href}
+            aria-current={current ? 'page' : undefined}
+            onClick={() => track('division_selected', { division: d.key, from: short ? 'business-strip' : 'business-menu' })}
+            className={cx(
+              'relative inline-flex min-h-11 shrink-0 items-center whitespace-nowrap px-3 font-display font-semibold uppercase tracking-[0.1em] transition-colors',
+              short ? 'text-[0.78rem]' : 'text-[0.9rem]',
+              current ? 'text-gold-300 after:absolute after:inset-x-3 after:bottom-1 after:h-0.5 after:bg-gold-400' : 'text-white/85 hover:text-gold-300',
+            )}
+          >
+            {short ? d.short : (
+              <>
+                <span className="xl:hidden">{d.short}</span>
+                <span className="hidden xl:inline">{d.label}</span>
+              </>
+            )}
+          </SmartLink>
+        )
+      })}
+    </nav>
+  )
+}
+
 export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] }) {
   const pathname = usePathname() || '/'
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -71,53 +102,14 @@ export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] })
 
   return (
     <header data-hydrated={hydrated ? 'true' : undefined} className="sticky top-0 z-40 border-b border-white/10 bg-night/92 backdrop-blur supports-[backdrop-filter]:bg-night/80">
-      {/* Business bar (GW-04): horizontal switcher between the three Karat Racing businesses. */}
-      <nav aria-label="Karat Racing businesses" className="border-b border-white/10 bg-ink-900/80">
-        <ul className="container-k flex items-stretch gap-1 overflow-x-auto sm:gap-2 [scrollbar-width:none]">
-          {divisions.map((d) => {
-            const current = active?.key === d.key
-            return (
-              <li key={d.key} className="shrink-0">
-                <SmartLink
-                  href={d.href}
-                  aria-current={current ? 'page' : undefined}
-                  onClick={() => track('division_selected', { division: d.key, from: 'business-bar' })}
-                  className={cx(
-                    'relative inline-flex min-h-11 items-center whitespace-nowrap px-2.5 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] transition-colors sm:px-3.5',
-                    current ? 'text-gold-300 after:absolute after:inset-x-2 after:bottom-0 after:h-0.5 after:bg-gold-400' : 'text-mist hover:text-white',
-                  )}
-                >
-                  <span className="sm:hidden">{d.short}</span>
-                  <span className="hidden sm:inline">{d.label}</span>
-                </SmartLink>
-              </li>
-            )
-          })}
-        </ul>
-      </nav>
       <div className="container-k flex min-h-16 items-center gap-3">
         <Link href="/" className="inline-flex min-h-11 items-center">
           <Wordmark size="sm" />
           <span className="sr-only"> home</span>
         </Link>
 
-        {inTeam && (
-          <nav aria-label="Championship Team" className="hidden items-center xl:flex">
-            {TEAM_NAV.map((g) => (
-              <Disclosure key={g.label} id={`nav-${g.label.replace(/\W+/g, '-').toLowerCase()}`} label={g.label} current={pathname.startsWith(g.href)}>
-                <ul>
-                  {g.children?.map((c) => (
-                    <li key={c.href}>
-                      <Link href={c.href} aria-current={pathname === c.href ? 'page' : undefined} className="block rounded px-3 py-2.5 hover:bg-white/5">
-                        {c.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </Disclosure>
-            ))}
-          </nav>
-        )}
+        {/* Business menu (GW-04): all three businesses shown inline — no dropdown. */}
+        <BusinessLinks divisions={divisions} activeKey={active?.key} className="ml-2 hidden items-center gap-1 md:flex lg:ml-6" />
 
         <div className="ml-auto flex items-center gap-1">
           <Link href="/search" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded hover:text-gold-300" aria-label="Search">
@@ -126,7 +118,7 @@ export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] })
               <path d="m20 20-3.5-3.5" />
             </svg>
           </Link>
-          <Link href="/championship-team/contact" className={cx('hidden min-h-11 items-center px-3 font-display text-[0.9rem] font-semibold uppercase tracking-[0.1em] hover:text-gold-300 sm:inline-flex', inTeam && 'xl:hidden 2xl:inline-flex')}>
+          <Link href="/championship-team/contact" className="hidden min-h-11 items-center px-3 font-display text-[0.9rem] font-semibold uppercase tracking-[0.1em] hover:text-gold-300 sm:inline-flex">
             Contact
           </Link>
           {inTeam && (
@@ -147,7 +139,7 @@ export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] })
                 {mobileOpen ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
               </svg>
             </button>
-            <div id="mobile-menu" hidden={!mobileOpen} className="fixed inset-x-0 top-[6.75rem] bottom-0 z-50 overflow-y-auto border-t border-white/10 bg-night px-4 pb-10">
+            <div id="mobile-menu" hidden={!mobileOpen} className="fixed inset-x-0 top-[6.75rem] bottom-0 md:top-16 z-50 overflow-y-auto border-t border-white/10 bg-night px-4 pb-10">
               <nav aria-label="Mobile">
                 <p className="eyebrow mt-6 mb-2">Businesses</p>
                 <ul className="grid gap-1">
@@ -187,6 +179,27 @@ export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] })
           </div>
         </div>
       </div>
+      {/* Phones: the same three businesses as a compact horizontal strip. */}
+      <BusinessLinks divisions={divisions} activeKey={active?.key} short className="flex items-stretch gap-1 overflow-x-auto border-t border-white/10 px-2 md:hidden [scrollbar-width:none]" />
+      {inTeam && (
+        <div className="hidden border-t border-white/5 bg-ink-900/60 xl:block">
+          <nav aria-label="Championship Team" className="container-k flex min-h-12 items-center">
+            {TEAM_NAV.map((g) => (
+              <Disclosure key={g.label} id={`nav-${g.label.replace(/\W+/g, '-').toLowerCase()}`} label={g.label} current={pathname.startsWith(g.href)}>
+                <ul>
+                  {g.children?.map((c) => (
+                    <li key={c.href}>
+                      <Link href={c.href} aria-current={pathname === c.href ? 'page' : undefined} className="block rounded px-3 py-2.5 hover:bg-white/5">
+                        {c.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </Disclosure>
+            ))}
+          </nav>
+        </div>
+      )}
     </header>
   )
 }
