@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { DIVISION_LINKS, TEAM_NAV } from '@/lib/nav'
 import { Wordmark } from './Logo'
+import { SmartLink } from './SmartLink'
 import { buttonClass, cx } from './ui'
 import { track } from './analytics'
 
@@ -70,43 +71,35 @@ export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] })
 
   return (
     <header data-hydrated={hydrated ? 'true' : undefined} className="sticky top-0 z-40 border-b border-white/10 bg-night/92 backdrop-blur supports-[backdrop-filter]:bg-night/80">
+      {/* Business bar (GW-04): horizontal switcher between the three Karat Racing businesses. */}
+      <nav aria-label="Karat Racing businesses" className="border-b border-white/10 bg-ink-900/80">
+        <ul className="container-k flex items-stretch gap-1 overflow-x-auto sm:gap-2 [scrollbar-width:none]">
+          {divisions.map((d) => {
+            const current = active?.key === d.key
+            return (
+              <li key={d.key} className="shrink-0">
+                <SmartLink
+                  href={d.href}
+                  aria-current={current ? 'page' : undefined}
+                  onClick={() => track('division_selected', { division: d.key, from: 'business-bar' })}
+                  className={cx(
+                    'relative inline-flex min-h-11 items-center whitespace-nowrap px-2.5 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] transition-colors sm:px-3.5',
+                    current ? 'text-gold-300 after:absolute after:inset-x-2 after:bottom-0 after:h-0.5 after:bg-gold-400' : 'text-mist hover:text-white',
+                  )}
+                >
+                  <span className="sm:hidden">{d.short}</span>
+                  <span className="hidden sm:inline">{d.label}</span>
+                </SmartLink>
+              </li>
+            )
+          })}
+        </ul>
+      </nav>
       <div className="container-k flex min-h-16 items-center gap-3">
         <Link href="/" className="inline-flex min-h-11 items-center">
           <Wordmark size="sm" />
           <span className="sr-only"> home</span>
         </Link>
-
-        {/* Business switcher (GW-04) */}
-        <div className="hidden md:block">
-          <Disclosure
-            id="business-switcher"
-            chip
-            label={
-              <span className="inline-flex items-center gap-2">
-                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7" /></svg>
-                <span className="sr-only">Business: </span>
-                <span className="hidden 2xl:inline">{active ? active.label : 'Our businesses'}</span>
-                <span className="2xl:hidden">{active ? active.short : 'Businesses'}</span>
-              </span>
-            }
-          >
-            <p className="eyebrow px-3 py-2">Karat Racing businesses</p>
-            <ul>
-              {divisions.map((d) => (
-                <li key={d.key}>
-                  <Link
-                    href={d.href}
-                    aria-current={active?.key === d.key ? 'true' : undefined}
-                    onClick={() => track('division_selected', { division: d.key, from: 'switcher' })}
-                    className={cx('block rounded px-3 py-2.5 hover:bg-white/5', active?.key === d.key && 'text-gold-300')}
-                  >
-                    {d.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Disclosure>
-        </div>
 
         {inTeam && (
           <nav aria-label="Championship Team" className="hidden items-center xl:flex">
@@ -154,15 +147,15 @@ export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] })
                 {mobileOpen ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
               </svg>
             </button>
-            <div id="mobile-menu" hidden={!mobileOpen} className="fixed inset-x-0 top-16 bottom-0 z-50 overflow-y-auto border-t border-white/10 bg-night px-4 pb-10">
+            <div id="mobile-menu" hidden={!mobileOpen} className="fixed inset-x-0 top-[6.75rem] bottom-0 z-50 overflow-y-auto border-t border-white/10 bg-night px-4 pb-10">
               <nav aria-label="Mobile">
                 <p className="eyebrow mt-6 mb-2">Businesses</p>
                 <ul className="grid gap-1">
                   {divisions.map((d) => (
                     <li key={d.key}>
-                      <Link href={d.href} aria-current={active?.key === d.key ? 'true' : undefined} className={cx('block min-h-11 rounded px-3 py-3 text-lg', active?.key === d.key ? 'bg-royal-500/15 text-gold-300' : 'hover:bg-white/5')}>
+                      <SmartLink href={d.href} aria-current={active?.key === d.key ? 'page' : undefined} className={cx('block min-h-11 rounded px-3 py-3 text-lg', active?.key === d.key ? 'bg-royal-500/15 text-gold-300' : 'hover:bg-white/5')}>
                         {d.label}
-                      </Link>
+                      </SmartLink>
                     </li>
                   ))}
                 </ul>
@@ -194,14 +187,6 @@ export function SiteHeader({ divisionsEnabled }: { divisionsEnabled: string[] })
           </div>
         </div>
       </div>
-      {active && (
-        <div className="border-t border-white/5 bg-ink-900/70">
-          <div className="container-k flex min-h-8 items-center gap-2 text-xs">
-            <span className="text-mist">You are viewing:</span>
-            <span className="font-display font-semibold uppercase tracking-[0.14em] text-gold-300">{active.label}</span>
-          </div>
-        </div>
-      )}
     </header>
   )
 }

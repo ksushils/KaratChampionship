@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Wordmark } from './Logo'
+import { SmartLink } from './SmartLink'
 import { CookieSettingsButton } from './ConsentManager'
 import type { SiteSetting } from '@/payload-types'
 
@@ -27,9 +28,9 @@ export function SiteFooter({ site, divisions }: { site: SiteSetting; divisions: 
           <ul className="grid gap-2 text-sm">
             {divisions.map((d) => (
               <li key={d.key}>
-                <Link href={d.href} className="hover:text-gold-300">
+                <SmartLink href={d.href} className="hover:text-gold-300">
                   {d.name}
-                </Link>
+                </SmartLink>
               </li>
             ))}
           </ul>

@@ -11,15 +11,26 @@ test('#1 visitor selects Championship Team from the gateway', async ({ page }) =
   await expect(panels).toHaveText([/Championship Team/i, /Testing/i, /Championship Series/i])
   await page.getByRole('link', { name: 'Championship Team', exact: true }).last().click()
   await expect(page).toHaveURL(/\/championship-team$/)
-  await expect(page.getByText('You are viewing:')).toBeVisible()
+  const bar = page.getByRole('navigation', { name: 'Karat Racing businesses' })
+  await expect(bar.getByRole('link', { name: 'Championship Team' })).toHaveAttribute('aria-current', 'page')
 })
 
-test('#2 visitor switches from Championship Team to Testing without returning to the gateway', async ({ page }) => {
+test('#2 business bar switches business; Testing opens in a new tab', async ({ page, context }) => {
+  await context.route(`${TESTING_URL}/**`, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: '<title>Testing</title>' }))
+  await context.route(TESTING_URL, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: '<title>Testing</title>' }))
   await page.goto('/championship-team')
   await page.locator('header[data-hydrated]').waitFor()
-  await page.getByRole('button', { name: /Business:/ }).click()
-  // Testing & Karat Academy is its own booking site (testing.karatracing.com), so the switcher links out to it
-  await expect(page.getByRole('link', { name: 'Testing & Karat Academy' }).first()).toHaveAttribute('href', TESTING_URL)
+  const bar = page.getByRole('navigation', { name: 'Karat Racing businesses' })
+  const testing = bar.getByRole('link', { name: /Testing & Karat Academy/ })
+  await expect(testing).toHaveAttribute('target', '_blank')
+  await expect(testing).toHaveAttribute('rel', /noopener/)
+  const [popup] = await Promise.all([context.waitForEvent('page'), testing.click()])
+  await expect(popup).toHaveURL(new RegExp(TESTING_URL.replace(/[.]/g, '\\.')))
+  await expect(page).toHaveURL(/\/championship-team$/) // original tab stays put
+  // Internal businesses navigate in the same tab
+  await bar.getByRole('link', { name: 'Championship Series' }).click()
+  await expect(page).toHaveURL(/\/championship-organisation$/)
+  await expect(page.getByRole('navigation', { name: 'Karat Racing businesses' }).getByRole('link', { name: 'Championship Series' })).toHaveAttribute('aria-current', 'page')
 })
 
 test('#3 #4 programmes show statuses and none is presented as a confirmed entry', async ({ page }) => {
@@ -116,7 +127,9 @@ test('#28 search returns public content only', async ({ page }) => {
 test('CHAMP-20 testing hand-off keeps programme context and goes to the Testing division', async ({ page }) => {
   await page.goto('/championship-team/programmes/italian-f4')
   // The hand-off goes to the Testing booking site's quote form
-  await expect(page.getByRole('link', { name: 'Ask about testing first' })).toHaveAttribute('href', TESTING_ENQUIRE_URL)
+  const handoff = page.getByRole('link', { name: /Ask about testing first/ })
+  await expect(handoff).toHaveAttribute('href', TESTING_ENQUIRE_URL)
+  await expect(handoff).toHaveAttribute('target', '_blank')
 })
 
 test('JOB-06 closed vacancies refuse applications', async ({ page }) => {

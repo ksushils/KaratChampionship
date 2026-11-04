@@ -68,7 +68,7 @@ export default async function Gateway() {
                   <p className="mt-1 font-display text-sm font-semibold uppercase tracking-[0.14em] text-gold-300">{d.pathwayLabel}</p>
                   <p className="text-mist mt-3 text-[0.95rem]">{d.description}</p>
                   <span aria-hidden="true" className="mt-auto pt-5 font-display text-sm font-semibold uppercase tracking-[0.12em] text-white group-hover:text-gold-300">
-                    Enter →
+                    {/^https?:/.test(HREF[d.key]) ? 'Visit site ↗' : 'Enter →'}
                   </span>
                 </div>
               </li>

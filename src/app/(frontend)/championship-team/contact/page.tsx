@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto'
 import { getSettings } from '@/lib/data'
 import { TESTING_ENQUIRE_URL } from '@/lib/nav'
 import { GeneralEnquiryForm } from '@/components/forms'
+import { SmartLink } from '@/components/SmartLink'
 import { Breadcrumbs, Card, PageHero, Section } from '@/components/ui'
 
 export const metadata: Metadata = { title: 'Contact', description: 'Contact Karat Racing. Separate routes for drivers, partners, media, careers, testing and championship organisation.', alternates: { canonical: '/championship-team/contact' } }
@@ -31,7 +32,7 @@ export default async function Contact() {
             <li key={h}>
               <Card className="h-full">
                 <h2 className="font-display text-lg font-bold uppercase">
-                  <Link href={h} className="after:absolute after:inset-0 hover:text-gold-300">{t}</Link>
+                  <SmartLink href={h} className="after:absolute after:inset-0 hover:text-gold-300">{t}</SmartLink>
                 </h2>
                 <p className="text-mist text-sm">{d}</p>
               </Card>

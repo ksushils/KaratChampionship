@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { siteSearch } from '@/lib/search'
+import { SmartLink } from '@/components/SmartLink'
 import { ButtonLink, PageHero, Section, StatusBadge, buttonClass } from '@/components/ui'
 
 export const metadata: Metadata = { title: 'Search', robots: { index: false, follow: true } }
@@ -29,7 +30,7 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
                 <li key={h.href + h.title} className="py-4">
                   <StatusBadge tone="neutral" label={h.type} />
                   <p className="mt-1 font-display text-xl font-bold uppercase">
-                    <Link href={h.href} className="hover:text-gold-300">{h.title}</Link>
+                    <SmartLink href={h.href} className="hover:text-gold-300">{h.title}</SmartLink>
                   </p>
                   {h.excerpt && <p className="text-mist line-clamp-2 text-sm">{h.excerpt}</p>}
                 </li>
