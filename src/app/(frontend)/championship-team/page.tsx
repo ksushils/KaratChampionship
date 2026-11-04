@@ -5,8 +5,9 @@ import { getArticles, getCurrentPartnerships, getEngagements, getEvents, getProg
 import { countdownTarget, eventPhase, isSeasonComplete, nextEvent } from '@/lib/events'
 import { ArticleCard, DriverCard, ProgrammeCard, mediaOf } from '@/components/cards'
 import { Countdown } from '@/components/Countdown'
+import { HeroVideo, TEAM_TRACK } from '@/components/HeroVideo'
 import { ButtonLink, Card, Section, SectionHeading, StatusBadge } from '@/components/ui'
-import { EVENT_STATUS_LABEL } from '@/lib/status'
+import { EVENT_STATUS_LABEL, PROGRAMME_STATUS_LABEL } from '@/lib/status'
 import { formatDateRange } from '@/lib/time'
 import type { Driver, Event, Programme } from '@/payload-types'
 
@@ -40,27 +41,45 @@ export default async function TeamHome() {
 
   return (
     <>
-      {/* HOME-01 hero */}
-      <section className="relative overflow-hidden border-b border-white/10" aria-labelledby="team-hero">
-        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(30,99,233,0.35),transparent_55%)]" />
-        <div className="container-k relative pt-12 md:pt-16">
+      {/* HOME-01 hero — background video: the aerial car on track (scripts/build-team-video.mjs) */}
+      <section className="relative isolate flex min-h-[36rem] flex-col justify-center overflow-hidden border-b border-white/10 md:min-h-[42rem]" aria-labelledby="team-hero">
+        <HeroVideo sources={TEAM_TRACK} controlClassName="bottom-[5.25rem] right-4 md:bottom-auto md:top-4" className="absolute inset-0 -z-20 h-full w-full object-cover object-[72%_50%]" />
+        <p className="sr-only">Background video: an overhead view of the Karat Racing livery concept car on a circuit, with the track moving past at speed.</p>
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-night/60 md:bg-transparent md:bg-gradient-to-r md:from-night md:from-10% md:via-night/70 md:via-40% md:to-night/0 md:to-65%" />
+        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-night to-transparent" />
+        <div className="container-k relative pb-28 pt-16 md:pb-32 md:pt-24">
           <p className="eyebrow mb-4">Karat Racing · Championship Team</p>
-          <h1 id="team-hero" className="max-w-4xl font-display text-[length:var(--text-display-xl)] font-extrabold uppercase leading-[0.95]">
+          <h1 id="team-hero" className="max-w-3xl font-display text-[length:var(--text-display-xl)] font-extrabold uppercase leading-[0.95] drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
             Prepared to <span className="text-gold-metal">race.</span> Built to develop.
           </h1>
-          <p className="text-mist mt-6 max-w-2xl text-lg">
+          <p className="mt-6 max-w-xl text-lg text-white/85">
             Single-seater programmes for drivers stepping up from karting and moving through junior categories. Each one has engineering, car preparation and a structured approach to every race weekend.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="/championship-team/race-with-us">Discuss your race programme</ButtonLink>
-            <ButtonLink href="/championship-team/partner-with-us" variant="outline">
+            <ButtonLink href="/championship-team/partner-with-us" variant="outline" className="bg-night/40 backdrop-blur-sm">
               Partner with Karat
             </ButtonLink>
           </div>
         </div>
-        <div className="relative mt-10">
-          <Image src="/brand/car-side-dark.jpg" alt="Karat Racing livery concept, side view of a blue and gold single-seater" width={1024} height={331} priority sizes="100vw" className="mx-auto h-auto w-full max-w-[1400px] [mask-image:linear-gradient(180deg,black_75%,transparent)]" />
-        </div>
+        {/* Programme "timing board" strip along the bottom of the hero */}
+        {current.length > 0 && (
+          <nav aria-label="Programmes" className="absolute inset-x-0 bottom-0 border-t border-white/10 bg-night/70 backdrop-blur">
+            <ul className="container-k flex items-stretch gap-0 overflow-x-auto [scrollbar-width:none]">
+              {current.map((p, i) => (
+                <li key={p.id} className="shrink-0 border-r border-white/10 first:border-l">
+                  <Link href={`/championship-team/programmes/${p.slug}`} className="group flex min-h-16 items-center gap-3 px-4 hover:bg-white/5 md:px-6">
+                    <span className="font-display text-2xl font-extrabold text-gold-500/80">{String(i + 1).padStart(2, '0')}</span>
+                    <span>
+                      <span className="block font-display text-sm font-bold uppercase tracking-wider group-hover:text-gold-300">{p.title}</span>
+                      <span className="block text-[0.7rem] uppercase tracking-widest text-mist">{PROGRAMME_STATUS_LABEL[p.status] ?? p.status}</span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
       </section>
 
       {/* HOME-04/05 next event, HOME-14 hidden when none */}
